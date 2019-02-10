@@ -2,7 +2,10 @@
 By Noah Trueblood on 19 February 2019
 
 An implementation of FABRIK aside a little library intended to ease IK chain
-manipulation making projects with threejs and beyond
+manipulation making projects with threejs and beyond.
+
+This file contains the implementation of FABRIK as well as a function for
+interpolating between goal/target points. The function is called moveTowards.
 *******************************************************************************/
 function distance(firstPoint, secondPoint) {
   const xDif = Math.abs(secondPoint.x - firstPoint.x);
@@ -21,7 +24,6 @@ function needToMove(endEffectorPos, goalPos, epsilon) {
 }
 
 function targetReachable(points, goalPos) {
-  // console.log('Checking if the target is reachable');
   const basePoint = points[0];
   let maxReach = 0;
 
@@ -31,18 +33,11 @@ function targetReachable(points, goalPos) {
     lastPoint = point;
   });
 
-  // console.log('Max reach is ' + maxReach);
-
   const distFromGoal = distance(basePoint, goalPos);
 
   const isReachable = distFromGoal <= maxReach;
 
   return { isReachable, maxReach };
-}
-
-function reachUntilMaxInDirection(direction) {
-  // TODO: Make points travel along unit vector towards input direction
-  console.log('Unimplemented: Reaching until max');
 }
 
 function findMagnitude(vector) {
@@ -109,8 +104,6 @@ function fabrik_rootToFinal(points, goalPos, length) {
   let base = points[0];
 
   for(let i = 0; i < points.length - 1; i += 1) {
-    // const length = distance(points[i], points[i + 1]);
-
     const lineCurGoalToCurPt = {
       x: points[i + 1].x - points[i].x,
       y: points[i + 1].y - points[i].y,
@@ -139,10 +132,7 @@ function fabrik_rootToFinal(points, goalPos, length) {
 
 function fabrik(points, goalPos, length = 3, epsilon = 0.05) {
   const { isReachable, maxReach } = targetReachable(points, goalPos)
-  // console.log(isReachable, maxReach);
   if (isReachable) {
-    // console.log('Target reachable, running FABRIK');
-
     let endEffectorPos = points[points.length - 1];
 
     while(needToMove(endEffectorPos, goalPos, epsilon)) {
@@ -160,15 +150,13 @@ function fabrik(points, goalPos, length = 3, epsilon = 0.05) {
 
     reachGoalPos = { x: reachGoalX, y: reachGoalY, z: reachGoalZ };
 
-    //console.log(reachGoalPos, maxReach);
-
     return fabrik(points, reachGoalPos);
   }
 
   return points;
-  // moveArm(points);
 }
 
+// For interpolating between two points.
 function moveTowards(currentVal, goalVal, moveSpeed) {
   let newVal = currentVal;
   if (currentVal < goalVal) {

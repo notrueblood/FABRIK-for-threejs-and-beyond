@@ -1,5 +1,13 @@
+/*******************************************************************************
+By Noah Trueblood on 19 February 2019
+
+An implementation of FABRIK aside a little library intended to ease IK chain
+manipulation making projects with threejs and beyond.
+
+This file is a little test that depicts a simple two segment arm moving between
+two goal points.
+*******************************************************************************/
 function testFabrik() {
-  // console.log('testing FABRIK');
   scene = new THREE.Scene();
   camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
   camera.position.z = 10;

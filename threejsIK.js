@@ -1,6 +1,11 @@
-/*
-  By Noah Trueblood
-*/
+/*******************************************************************************
+By Noah Trueblood on 19 February 2019
+
+An implementation of FABRIK aside a little library intended to ease IK chain
+manipulation making projects with threejs and beyond.
+
+This file contains simple but useful functions for creating elements in threejs.
+*******************************************************************************/
 function createPoint({ x, y, z , size }) {
   const pointGeometry = new THREE.Geometry();
   pointGeometry.vertices.push(new THREE.Vector3(x, y, z));
@@ -28,9 +33,7 @@ function createLine({ x0, y0, z0, x1, y1, z1 }) {
 function createPlane({ width, height, widthSegments, heightSegments }) {
   const planeGeometry = new THREE.PlaneGeometry(width, height, widthSegments, heightSegments);
   planeMaterial = new THREE.MeshBasicMaterial({ color: (Math.random() * 0xffffff), side: THREE.DoubleSide });
-
-  // const imageTexture = new THREE.TextureLoader().load('photographs/eye.jpg');
-  // const planeMaterial = new THREE.MeshBasicMaterial({ map: imageTexture, side: THREE.DoubleSide });
+  
   const plane = new THREE.Mesh(planeGeometry, planeMaterial);
 
   return plane;
